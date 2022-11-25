@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebWasmClient", "WebWasmCli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{36FA7676-9F59-49D1-8B8E-99057CFF182D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTOs", "DTOs\DTOs.csproj", "{9FB5C583-F0AF-4B8D-9423-C6A8508CFE5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{36FA7676-9F59-49D1-8B8E-99057CFF182D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36FA7676-9F59-49D1-8B8E-99057CFF182D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36FA7676-9F59-49D1-8B8E-99057CFF182D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FB5C583-F0AF-4B8D-9423-C6A8508CFE5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FB5C583-F0AF-4B8D-9423-C6A8508CFE5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FB5C583-F0AF-4B8D-9423-C6A8508CFE5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FB5C583-F0AF-4B8D-9423-C6A8508CFE5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

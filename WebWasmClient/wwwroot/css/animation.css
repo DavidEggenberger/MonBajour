@@ -1,0 +1,42 @@
+﻿#app{
+    height: 100vh;
+    width: 100vw;
+}
+.loadingSpinnerContainer {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    place-content: center;
+}
+.loadingSpinner {
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    font-size: 10px;
+}
+
+    .loadingSpinner > div {
+        background-color: black;
+        height: 100%;
+        width: 8px;
+        display: inline-block;
+        animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    }
+
+    .loadingSpinner .rect2 {
+        animation-delay: -2.0s;
+    }
+
+    .loadingSpinner .rect3 {
+        animation-delay: -1.0s;
+    }
+
+@keyframes sk-stretchdelay {
+    0%, 40%, 100% {
+        transform: scaleY(0.4);
+    }
+
+    20% {
+        transform: scaleY(1.0);
+    }
+}

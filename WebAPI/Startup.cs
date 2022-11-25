@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.BaselAPI;
 
 namespace WebAPI
 {
@@ -26,12 +27,20 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
             });
+
+            services.AddAutoMapper(typeof(Startup).Assembly);
+
+            services.AddHttpClient<BaselAPIClient>(client =>
+            {
+                client.BaseAddress = new Uri("https://data.bs.ch/api/records/1.0/search/?");
+            });
+
+            services.AddSingleton<BaselAPIDataBucket>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
