@@ -18,7 +18,7 @@
     overflow: hidden;
     margin: 0;
     display: grid;
-    grid-template-rows: 70px 1fr;
+    grid-template-rows: 50px 1fr;
 }
 
 .page h1{
@@ -29,10 +29,40 @@ nav{
     display: flex;
     justify-content: flex-start;
     align-items: end;
+    padding: 0 15px;
+    justify-content: space-between;
 }
 
 main{
     padding: 5px 15px 15px 15px;
     height: 100%;
-
+    width: 100%;
 }
+
+.indexContainer{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    grid-column: 1;
+}
+
+.WelcomeContainer{
+    grid-row-start: 1;
+    grid-row-end: 5;
+    display: grid;
+    place-content: center;
+}
+
+button{
+    outline: none;
+    border-radius: 3px;
+    padding: 3px;
+    /*background-color: white;*/
+    cursor: pointer;
+    font-size: 14px;
+}
+    button:hover {
+        /*background: #FEDDD2;
+        transition: 1.5s ease-in-out;*/
+    }
