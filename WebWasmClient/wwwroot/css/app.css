@@ -37,6 +37,7 @@ main{
     padding: 5px 15px 15px 15px;
     height: 100%;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .indexContainer{
@@ -50,6 +51,14 @@ main{
 .WelcomeContainer{
     grid-row-start: 1;
     grid-row-end: 5;
+    display: grid;
+    place-content: center;
+}
+
+.LocalizedContainer {
+    grid-row-start: 1;
+    grid-row-end: 5;
+    grid-template-rows: repeat(5, 1fr);
     display: grid;
     place-content: center;
 }
@@ -90,4 +99,30 @@ button{
     text-align: center;
     text-transform: capitalize;
     margin-top: 3px;
+}
+
+.alwaysContainer{
+    grid-row-start: 5;
+    grid-row-end: 8;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.alwaysContainer h2, h5{
+    text-align: center;
+}
+
+.alwaysContainer .main{
+    height: 100%;
+    width: 100%;
+}
+
+.LocalizedResult{
+    grid-row-start: 1;
+    grid-row-end: 2;
+    display: grid;
+    place-content: center;
+}
+.LocalizedResult h3{
+    margin-bottom: 5px;
 }

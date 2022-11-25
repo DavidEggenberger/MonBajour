@@ -1,16 +1,70 @@
 ﻿@page "/"
-
+@using DTOs.GooglePlacesAPI
+@inject HttpClient httpClient
 
 <div class="indexContainer">
-    <div class="WelcomeContainer">
-        <h1>Entdecke dein Basel!</h1>
-        <div class="inputContainer">
-            <label>Wo wohnst du?</label>
-            <input @onkeydown="k => Check(k)" spellcheck="false" @bind="inputLocation" @bind:event="oninput"/>
-            <div style="height: 6px; vertical-align: central; display: grid; justify-content: center; width: 100%;">
-                <label style="margin-top: 5px; left: 0; right: 0; text-align: center; font-size: 12px; display: @(showEnterHint ? "block" : "none"); position: relative;">Drücke Enter</label>
+    @if(searched == false)
+    {
+        <div class="WelcomeContainer">
+            <h1>Entdecke dein Basel!</h1>
+            <div class="inputContainer">
+                <label>Wo wohnst du?</label>
+                <input @onkeydown="async k => await SearchLocationAsync(k)" spellcheck="false" @bind="inputLocation" @bind:event="oninput"/>
+                <div style="height: 6px; vertical-align: central; display: grid; justify-content: center; width: 100%;">
+                    <label style="margin-top: 5px; left: 0; right: 0; text-align: center; font-size: 12px; display: @(showEnterHint ? "block" : "none"); position: relative;">Drücke Enter</label>
+                </div>
+            </div>   
+        </div>
+    }
+    else
+    {
+        @if(googlePlacesAPIResponse != null && searched)
+        {
+            <div class="LocalizedContainer">
+                <div class="LocalizedResult">
+                    <div style="display: grid;">
+                        <h3>@googlePlacesAPIResponse.candidates.First().formatted_address</h3>
+                        <button style="font-size: 13px;" @onclick="() => { searched = false; inputLocation = string.Empty; }">Diese Addresse stimmt nicht</button>
+                    </div>
+                    
+                </div>
+
             </div>
-        </div> 
+        }   
+    }
+    <div class="alwaysContainer">
+        <section>
+            <div class="header">
+                <h2>Sports ⚽️</h2>
+            </div>
+            <div class="main">
+                <h5>Der FCB spielt heute gegen Zürich</h5>
+            </div>
+        </section>
+        <section>
+            <div class="header">
+                <h2>Culture 🎭</h2>
+            </div>
+            <div class="main">
+
+            </div>
+        </section>
+        <section>
+            <div class="header">
+                <h2>Events 📅</h2>
+            </div>
+            <div class="main">
+
+            </div>
+        </section>
+        <section>
+            <div class="header">
+                <h2>Facts 📊</h2>
+            </div>
+            <div class="main">
+
+            </div>
+        </section>
     </div>
 </div>
 
@@ -22,12 +76,17 @@
         set => _inputLocation = value;
     }
     private bool showEnterHint;
+    private bool searched;
+    private GooglePlacesAPIResponseDTO googlePlacesAPIResponse;
+    private bool askForLocationConfirmation;
 
-    private void Check(KeyboardEventArgs keyboardEventArgs)
+    private async Task SearchLocationAsync(KeyboardEventArgs keyboardEventArgs)
     {
         if(keyboardEventArgs.Key == "Enter")
         {
-            Console.WriteLine("Enter");
+            googlePlacesAPIResponse = await httpClient.GetFromJsonAsync<GooglePlacesAPIResponseDTO>($"/api/placesSearch/{inputLocation}", new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            searched = true;
+            StateHasChanged();
         }
 
         showEnterHint = inputLocation?.Length > 4 ? true : false;
