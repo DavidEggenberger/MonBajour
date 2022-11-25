@@ -58,7 +58,7 @@ button{
     outline: none;
     border-radius: 3px;
     padding: 3px;
-    /*background-color: white;*/
+    background: none;
     cursor: pointer;
     font-size: 14px;
 }
@@ -66,3 +66,28 @@ button{
         /*background: #FEDDD2;
         transition: 1.5s ease-in-out;*/
     }
+
+.inputContainer{
+    margin-top: 5px;
+    width: 100%;
+    display: grid;
+    justify-content: center;
+}
+.inputContainer h1{
+    font-size: 37px;
+}
+.inputContainer label{
+    display: block;
+    text-align: center;
+    font-size: 16px;
+}
+.inputContainer input{
+    font-size: 20px;
+    outline: none;
+    border-radius: 3px;
+    padding: 2px;
+    border: 1px solid black;
+    text-align: center;
+    text-transform: capitalize;
+    margin-top: 3px;
+}

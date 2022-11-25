@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.BaselAPI;
+using WebAPI.PlacesAPI;
 
 namespace WebAPI
 {
@@ -30,7 +31,7 @@ namespace WebAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyBajourAPI", Version = "v1" });
             });
 
             services.AddAutoMapper(typeof(Startup).Assembly);
@@ -41,6 +42,8 @@ namespace WebAPI
             });
 
             services.AddSingleton<BaselAPIDataBucket>();
+            services.AddScoped<BaselAPIDataBucketService>();
+            services.AddSingleton<GooglePlacesAPIClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -52,7 +55,11 @@ namespace WebAPI
             }
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
+            app.UseSwaggerUI(options =>
+            {
+                options.InjectStylesheet("/css/swaggerstyles.css");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1");
+            });
 
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();

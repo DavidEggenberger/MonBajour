@@ -1,0 +1,52 @@
+﻿.swagger-ui .topbar .download-url-wrapper .select-label select {
+    border-color: black;
+}
+
+html {
+    background-color: #FEDDD2 !important;
+}
+
+.swagger-ui .info .title small:last-child {
+    background-color: #FEDDD2 !important;
+}
+
+.opblock-section-header {
+    color: #0d9488;
+}
+
+.topbar {
+    background-color: #FEDDD2 !important;
+    color: black !important;
+}
+
+.swagger-ui {
+    background: linear-gradient(0deg, #FEDDD2, white);
+}
+
+#header {
+    background: linear-gradient(0deg, #FEDDD2, white);
+}
+
+#select_document {
+    background: #666 !important;
+}
+
+input[name=baseUrl] {
+    display: none !important;
+}
+
+.logo__title {
+    display: none !important;
+}
+
+#api_info a {
+    color: #007bff !important;
+    text-decoration: none !important;
+}
+
+    #api_info a:hover,
+    #api_info a:focus,
+    #api_info a:active {
+        color: #0056b3 !important;
+        text-decoration: underline !important;
+    }

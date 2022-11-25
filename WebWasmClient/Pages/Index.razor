@@ -3,8 +3,27 @@
 
 <div class="indexContainer">
     <div class="WelcomeContainer">
-        <h1>Willkommen zu deinem Basel!</h1>
+        <h1>Entdecke dein Basel!</h1>
+        <div class="inputContainer">
+            <label>Wo wohnst du?</label>
+            <input @onkeydown="k => Check(k)" spellcheck="false"/>
+        </div> 
     </div>
 </div>
 
+@code{
+    private string _inputLocation;
+    public string inputLocation
+    {
+        get => _inputLocation;
+        set => _inputLocation = value;
+    }
 
+    private void Check(KeyboardEventArgs keyboardEventArgs)
+    {
+        if(keyboardEventArgs.Key == "Enter")
+        {
+            Console.WriteLine("Enter");
+        }
+    }
+}

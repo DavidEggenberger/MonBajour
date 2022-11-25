@@ -14,18 +14,18 @@ namespace WebAPI.Controllers
     [Route("[controller]")]
     public class BaselAPIDataController : ControllerBase
     {
-        private readonly BaselAPIDataBucket baselAPIDataBucket;
+        private readonly BaselAPIDataBucketService baselAPIDataBucketService;
         private readonly IMapper mapper;
-        public BaselAPIDataController(BaselAPIDataBucket baselAPIDataBucket, IMapper mapper)
+        public BaselAPIDataController(BaselAPIDataBucketService baselAPIDataBucketService, IMapper mapper)
         {
-            this.baselAPIDataBucket = baselAPIDataBucket;
+            this.baselAPIDataBucketService = baselAPIDataBucketService;
             this.mapper = mapper;
         }
 
         [HttpGet]
         public BaselAPIDataBucketDTO Get()
         {
-            return mapper.Map<BaselAPIDataBucketDTO>(baselAPIDataBucket);
+            return mapper.Map<BaselAPIDataBucketDTO>(baselAPIDataBucketService.GetBaselAPIDataBucket());
         }
     }
 }
