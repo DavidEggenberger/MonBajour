@@ -8,14 +8,19 @@
     @if(searched == false)
     {
         <div class="WelcomeContainer">
-            <h1>Entdecke dein Basel!</h1>
-            <div class="inputContainer">
-                <label>Wo wohnst du?</label>
-                <input @onkeydown="async k => await SearchLocationAsync(k)" spellcheck="false" @bind="inputLocation" @bind:event="oninput"/>
-                <div style="height: 6px; vertical-align: central; display: grid; justify-content: center; width: 100%;">
-                    <label style="margin-top: 5px; left: 0; right: 0; text-align: center; font-size: 12px; display: @(showEnterHint ? "block" : "none"); position: relative;">Drücke Enter</label>
-                </div>
-            </div>   
+            <div class="communityTickerContainer">
+                <ShareDisplayComponent></ShareDisplayComponent>
+            </div>
+            <div style="height: 100%; width: 100%; display: grid; place-content: center;">
+                <h1>Entdecke dein Basel!</h1>
+                <div class="inputContainer">
+                    <label>Wo wohnst du?</label>
+                    <input @onkeydown="async k => await SearchLocationAsync(k)" spellcheck="false" @bind="inputLocation" @bind:event="oninput"/>
+                    <div style="height: 6px; vertical-align: central; display: grid; justify-content: center; width: 100%;">
+                        <label style="margin-top: 5px; left: 0; right: 0; text-align: center; font-size: 12px; display: @(showEnterHint ? "block" : "none"); position: relative;">Drücke Enter</label>
+                    </div>
+                </div>   
+            </div>
         </div>
     }
     else
@@ -100,7 +105,7 @@
                     </div>
                     <div class="main">
                         <h5>In der Stadt Basel gibt es 4000 freie Parkplätze</h5>
-                        <h5></h5>
+                        <h5>Der Rhein hat eine Temperatur von 10 Grad</h5>
                     </div>
                 </section>
             </div> 

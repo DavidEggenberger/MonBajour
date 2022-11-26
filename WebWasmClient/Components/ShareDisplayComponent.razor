@@ -1,21 +1,118 @@
 ﻿@inject HttpClient httpClient
 
-<div class="ShareDisplacContainer" style="display: flex; flex-direction: column;">
-    @if(shares != null)
+<div class="ShareDisplayContainer">
+    <div style="display: flex;">
+        <select @bind="@shareType">
+            <option value="@ShareTypeEnum.All">Alle Typen</option>
+            <option value="@ShareTypeEnum.Cultural">🎭 Cultural</option>
+            <option value="@ShareTypeEnum.Events">📅 Events</option>
+            <option value="@ShareTypeEnum.Inserat">💵 Inserat</option>
+            <option value="@ShareTypeEnum.Sport">⚽️ Sports</option>
+        </select>
+
+        <select @bind="@filterOption" style="margin-left: 15px;">
+            <option value="@FilterOption.Newest">Neuste zuerst</option>
+            <option value="@FilterOption.Biggest">Meiste Upvotes</option>
+        </select>
+    </div>
+    @if(shares != null && shares.Any())
     {
         foreach(var share in shares)
         {
             <ShareComponent Share="share"></ShareComponent>
         }
     }
+
+    <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+        <NotAuthorized>
+            <div style="width: 100%; height: 35px; place-content: center; display: grid;">
+                <a href="/api/bffuser/login"><button>Registriere dich um zu schreiben</button></a>
+            </div>
+        </NotAuthorized>
+        <Authorized>
+            <div style="writeShareContainer">
+                <input type="text" @bind="message" />
+                <select @bind="@selectedTypeEnum">
+                    <option value="@ShareTypeEnum.All">Alle Typen</option>
+                    <option value="@ShareTypeEnum.Cultural">🎭 Cultural</option>
+                    <option value="@ShareTypeEnum.Events">📅 Events</option>
+                    <option value="@ShareTypeEnum.Inserat">💵 Inserat</option>
+                    <option value="@ShareTypeEnum.Sport">⚽️ Sports</option>
+                </select>
+                <button @onclick='async() => { await CreatePost();}'>Posten</button>
+            </div>
+        </Authorized>
+    </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+
 </div>
 
 
 @code {
+    private ShareTypeEnum selectedTypeEnum;
+    private string message;
+
+    private async Task CreatePost()
+    {
+        await httpClient.PostAsJsonAsync<ShareDTO>("/api/share", new ShareDTO
+        {
+            Type = selectedTypeEnum,
+            Messages = message
+        });
+
+        message = string.Empty;
+
+        sharesShadow = shares = await httpClient.GetFromJsonAsync<List<ShareDTO>>("/api/share");
+
+
+
+        StateHasChanged();
+    }
+
+    private List<ShareDTO> sharesShadow;
     private List<ShareDTO> shares;
+    private ShareTypeEnum _shareType;
+    private ShareTypeEnum shareType
+    {
+        get => _shareType;
+        set
+        {
+            _shareType = value;
+            if(_shareType == ShareTypeEnum.All)
+            {
+                shares = sharesShadow;
+                return;
+            }
+            shares = sharesShadow.Where(s => s.Type == _shareType).ToList();
+        }
+    }
+
+    private FilterOption _filterOption;
+    private FilterOption filterOption
+    {
+        get => _filterOption;
+        set
+        {
+            _filterOption = value;
+            if(_filterOption == FilterOption.Newest)
+            {
+                shares = shares.OrderByDescending(s => s.SentTime).ToList();
+            }
+            if(_filterOption == FilterOption.Biggest)
+            {
+                shares = shares.OrderByDescending(s => s.UserNamesUpvoted.Count).ToList();
+            }
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        shares = await httpClient.GetFromJsonAsync<List<ShareDTO>>("/api/share");
+        sharesShadow = shares = await httpClient.GetFromJsonAsync<List<ShareDTO>>("/api/share");
+    }
+
+    private enum FilterOption
+    {
+        Newest,
+        Biggest,
+        Smallest
     }
 }

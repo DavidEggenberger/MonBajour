@@ -1,13 +1,28 @@
 ﻿@inject HttpClient httpClient
 
-<div class="ShareContainer" style="display: flex;">
-    <h6>@Share.SenderUserName: @Share.Messages</h6>
-    <div>
-
+<div class="ShareContainer">
+    <h4>@GetEmoji(Share) @Share.SentTime.ToShortTimeString() @Share?.SenderUserName: @Share?.Messages</h4>
+    <div class="Upvote">
+        @if(Share.UserNamesUpvoted?.Count > 0)
+        {
+            <img src="/next.png" />
+            <h4>@Share.UserNamesUpvoted?.Count</h4>
+        }
     </div>
 </div>
 
 @code{
     [Parameter]
     public ShareDTO Share { get; set; }
+
+    public string GetEmoji(ShareDTO shareDTO)
+    {
+        return shareDTO.Type switch
+        {
+            ShareTypeEnum.Cultural => "🎭",
+            ShareTypeEnum.Events => "📅",
+            ShareTypeEnum.Inserat => "💵",
+            ShareTypeEnum.Sport => "⚽️"
+        };
+    }
 }

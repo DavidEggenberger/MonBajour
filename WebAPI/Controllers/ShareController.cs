@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebAPI.Share;
 
 namespace WebAPI.Controllers
 {
@@ -13,9 +14,9 @@ namespace WebAPI.Controllers
     public class ShareController : ControllerBase
     {
         private List<ShareDTO> shares;
-        public ShareController(List<ShareDTO> shares)
+        public ShareController(ShareContainer shares)
         {
-            this.shares = shares;
+            this.shares = shares.Shares;
         }
 
         [HttpGet]
@@ -26,13 +27,15 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult CreateShare([FromRoute] string message)
+        public ActionResult CreateShare([FromBody] ShareDTO shareDTO)
         {
             this.shares.Add(new ShareDTO
             {
-                Messages = message,
+                Messages = shareDTO.Messages,
                 SenderUserName = User.Identity.Name,
-                UserNamesUpvoted = new List<string>()
+                UserNamesUpvoted = new List<string>(),
+                SentTime = DateTime.Now,
+                Type = shareDTO.Type
             });
 
             return Ok();
