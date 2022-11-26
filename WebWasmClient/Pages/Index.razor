@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using DTOs
 @using DTOs.GooglePlacesAPI
 @inject HttpClient httpClient
 
@@ -23,48 +24,77 @@
             <div class="LocalizedContainer">
                 <div class="LocalizedResult">
                     <div style="display: grid;">
-                        <h3>@googlePlacesAPIResponse.candidates.First().formatted_address</h3>
-                        <button style="font-size: 13px;" @onclick="() => { searched = false; inputLocation = string.Empty; }">Diese Addresse stimmt nicht</button>
+                        <h3 style="text-align: center;">@googlePlacesAPIResponse.candidates.First().formatted_address</h3>
+                        <div style="width: 100%; display: grid; place-content: center;">
+                            <button @onclick="() => { searched = false; inputLocation = string.Empty; }">Diese Addresse stimmt nicht</button>
+                        </div>
                     </div>
-                    
                 </div>
+                <div class="SearchResultContainer">
+                    <div style="height: 100%; width: 100%;">
+                        @if(baselAPIData != null)
+                        {
+                            <div class="AdministrativeContainer">
+                                
+                            </div>
 
+                            <div class="AdministrativeContainer">
+
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         }   
     }
     <div class="alwaysContainer">
-        <section>
-            <div class="header">
-                <h2>Sports ⚽️</h2>
-            </div>
-            <div class="main">
-                <h5>Der FCB spielt heute gegen Zürich</h5>
-            </div>
-        </section>
-        <section>
-            <div class="header">
-                <h2>Culture 🎭</h2>
-            </div>
-            <div class="main">
+        <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+            <NotAuthorized>
+                <div class="LoginMotivationContainer">
+                    <a href="/api/bffuser/login"><button>Login to personalize your experience!</button></a>
+                </div>
+                <div class="SectionOverviewContainer">
+                <section>
+                    <div class="header">
+                        <h2>Sports ⚽️</h2>
+                    </div>
+                    <div class="main">
+                        <h5>Der FCB spielt heute gegen Zürich</h5>
+                        <h5>Die Analyse des EHC Basel vor dem Spiel gegen Olten</h5>
+                    </div>
+                </section>
+                <section>
+                    <div class="header">
+                        <h2>Culture 🎭</h2>
+                    </div>
+                    <div class="main">
 
-            </div>
-        </section>
-        <section>
-            <div class="header">
-                <h2>Events 📅</h2>
-            </div>
-            <div class="main">
+                    </div>
+                </section>
+                <section>
+                    <div class="header">
+                        <h2>Events 📅</h2>
+                    </div>
+                    <div class="main">
 
-            </div>
-        </section>
-        <section>
-            <div class="header">
-                <h2>Facts 📊</h2>
-            </div>
-            <div class="main">
+                    </div>
+                </section>
+                <section>
+                    <div class="header">
+                        <h2>Facts 📊</h2>
+                    </div>
+                    <div class="main">
 
-            </div>
-        </section>
+                    </div>
+                </section>
+            </div> 
+            </NotAuthorized>
+            <Authorized>
+                <div class="PersonalizedSearchContainer">
+
+                </div>
+            </Authorized>
+        </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
     </div>
 </div>
 
@@ -87,8 +117,18 @@
             googlePlacesAPIResponse = await httpClient.GetFromJsonAsync<GooglePlacesAPIResponseDTO>($"/api/placesSearch/{inputLocation}", new System.Text.Json.JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             searched = true;
             StateHasChanged();
+            await LoadData(googlePlacesAPIResponse.candidates.First().formatted_address);
         }
 
-        showEnterHint = inputLocation?.Length > 4 ? true : false;
+        showEnterHint = inputLocation?.Length >= 4 ? true : false;
+    }
+
+
+    private BaselAPIDataBucketDTO baselAPIData;
+
+    private async Task LoadData(string address)
+    {
+        baselAPIData = await httpClient.GetFromJsonAsync<BaselAPIDataBucketDTO>($"/api/BaselAPIData/{address}");
+        StateHasChanged();
     }
 }

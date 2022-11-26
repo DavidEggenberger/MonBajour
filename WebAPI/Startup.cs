@@ -1,6 +1,10 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,9 +14,12 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using WebAPI.BaselAPI;
+using WebAPI.Infrastructure;
 using WebAPI.PlacesAPI;
+using WebAPI.Share;
 
 namespace WebAPI
 {
@@ -41,9 +48,30 @@ namespace WebAPI
                 client.BaseAddress = new Uri("https://data.bs.ch/api/records/1.0/search/?");
             });
 
+            services.AddSingleton<ShareContainer>();
             services.AddSingleton<BaselAPIDataBucket>();
             services.AddScoped<BaselAPIDataBucketService>();
             services.AddSingleton<GooglePlacesAPIClient>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            })
+            .AddGoogle(options =>
+            {
+                options.ClientId = Configuration["GoogleClientId"];
+                options.ClientSecret = Configuration["GoogleClientSecret"];
+            })
+            .AddCookie(options =>
+            {
+                options.ExpireTimeSpan = new TimeSpan(0, 60, 0);
+                options.Cookie.SameSite = SameSiteMode.Strict;
+                options.Cookie.HttpOnly = true;
+                options.Cookie.Name = "AuthenticationCookie";
+                options.LoginPath = "/Login";
+                options.LogoutPath = "/User/Logout";
+                options.SlidingExpiration = false;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +95,7 @@ namespace WebAPI
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

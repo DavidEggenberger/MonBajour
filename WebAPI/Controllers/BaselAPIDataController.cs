@@ -11,7 +11,7 @@ using WebAPI.BaselAPI;
 namespace WebAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class BaselAPIDataController : ControllerBase
     {
         private readonly BaselAPIDataBucketService baselAPIDataBucketService;
@@ -26,6 +26,12 @@ namespace WebAPI.Controllers
         public BaselAPIDataBucketDTO Get()
         {
             return mapper.Map<BaselAPIDataBucketDTO>(baselAPIDataBucketService.GetBaselAPIDataBucket());
+        }
+
+        [HttpGet("{address}")]
+        public BaselAPIDataBucketDTO GetForAddress(string address)
+        {
+            return mapper.Map<BaselAPIDataBucketDTO>(baselAPIDataBucketService.GetBaselAPIDataBucketForAddress(address));
         }
     }
 }

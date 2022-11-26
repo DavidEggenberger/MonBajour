@@ -3,7 +3,25 @@
 <div class="page">
     <nav>
         <h1>MonBajour</h1>
-        <a href="/swagger/index.html"><button>Endtecke unsere API</button></a>  
+        <div>
+            <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+                <Authorized>
+                    <div class="rightSideContainer">
+                        <div style="display: flex; align-items: end;">
+                            <h4 style="margin-bottom: 0;">Hello @(context.User.Identity.Name)!</h4>
+                            <a style="margin-left: 10px;" href="/api/bffUser/Logout"><button>Logout</button></a>
+                            <a style="margin-left: 10px;" href="/swagger/index.html"><button>Entdecke unsere API</button></a>  
+                        </div>   
+                    </div>
+                </Authorized>
+                <NotAuthorized>
+                    <div class="rightSideContainer"> 
+                        <a href="/api/bffuser/login"><button>Login</button></a>
+                        <a href="/swagger/index.html"><button>Entdecke unsere API</button></a>  
+                    </div>
+                </NotAuthorized>
+            </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+        </div>
     </nav>
     <main>
         @Body
