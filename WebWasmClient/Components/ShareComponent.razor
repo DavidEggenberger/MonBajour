@@ -1,0 +1,13 @@
+﻿@inject HttpClient httpClient
+
+<div class="ShareContainer" style="display: flex;">
+    <h6>@Share.SenderUserName: @Share.Messages</h6>
+    <div>
+
+    </div>
+</div>
+
+@code{
+    [Parameter]
+    public ShareDTO Share { get; set; }
+}

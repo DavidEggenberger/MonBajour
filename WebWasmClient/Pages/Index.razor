@@ -2,6 +2,7 @@
 @using DTOs
 @using DTOs.GooglePlacesAPI
 @inject HttpClient httpClient
+@inject NavigationManager navigationManager
 
 <div class="indexContainer">
     @if(searched == false)
@@ -25,9 +26,20 @@
                 <div class="LocalizedResult">
                     <div style="display: grid;">
                         <h3 style="text-align: center;">@googlePlacesAPIResponse.candidates.First().formatted_address</h3>
-                        <div style="width: 100%; display: grid; place-content: center;">
-                            <button @onclick="() => { searched = false; inputLocation = string.Empty; }">Diese Addresse stimmt nicht</button>
-                        </div>
+                        <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+                            <NotAuthorized>
+                                 <div style="width: 100%; display: grid; place-content: center;">
+                                    <button @onclick="() => { searched = false; inputLocation = string.Empty; }">Diese Addresse stimmt nicht</button>
+                                </div>
+                            </NotAuthorized>
+                            <Authorized>
+                                <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; grid-gap: 20px; justify-content: space-between;">
+                                    <button @onclick="() => { searched = false; inputLocation = string.Empty; }">Diese Addresse stimmt nicht</button>
+                                    <button @onclick='async () => { await httpClient.PostAsync($"/api/bffuser/address/{googlePlacesAPIResponse.candidates.First().formatted_address}", null); StateHasChanged(); navigationManager.NavigateTo("/", true); }'>Diese Addresse in meinem Profil abspeichern</button>
+                                </div>
+                            </Authorized>
+                        </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+                       
                     </div>
                 </div>
                 <div class="SearchResultContainer">
@@ -68,7 +80,9 @@
                         <h2>Culture 🎭</h2>
                     </div>
                     <div class="main">
-
+                        <h5>Eine Übersicht über die neuesten Theateraufführungen in Basel</h5>
+                        <h5>Wir porträtieren die Jugend-Rap Szene</h5>
+                        <h5>Eine Übersicht aller neuen Museumsführungen</h5>
                     </div>
                 </section>
                 <section>
@@ -76,7 +90,8 @@
                         <h2>Events 📅</h2>
                     </div>
                     <div class="main">
-
+                        <h5>Die Schulferien über Weihnachten beginnen am 22.12.2022</h5>
+                        <h5>Die Bibliothek xy bleibt am 11.12.2022 geschlossen</h5>
                     </div>
                 </section>
                 <section>
@@ -84,7 +99,8 @@
                         <h2>Facts 📊</h2>
                     </div>
                     <div class="main">
-
+                        <h5>In der Stadt Basel gibt es 4000 freie Parkplätze</h5>
+                        <h5></h5>
                     </div>
                 </section>
             </div> 

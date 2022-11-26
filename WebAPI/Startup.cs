@@ -17,7 +17,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WebAPI.BaselAPI;
-using WebAPI.Infrastructure;
 using WebAPI.PlacesAPI;
 using WebAPI.Share;
 
@@ -48,6 +47,7 @@ namespace WebAPI
                 client.BaseAddress = new Uri("https://data.bs.ch/api/records/1.0/search/?");
             });
 
+            services.AddSingleton<UserInfoDTOBucket>();
             services.AddSingleton<ShareContainer>();
             services.AddSingleton<BaselAPIDataBucket>();
             services.AddScoped<BaselAPIDataBucketService>();

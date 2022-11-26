@@ -8,8 +8,9 @@ namespace DTOs.Share
 {
     public class ShareDTO
     {
+        public Guid Id { get; set; }
         public string SenderUserName { get; set; }
         public string Messages { get; set; }
-        public int Upvotes { get; set; }
+        public List<string> UserNamesUpvoted { get; set; }
     }
 }

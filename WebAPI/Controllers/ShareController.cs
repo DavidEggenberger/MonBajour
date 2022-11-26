@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace WebAPI.Controllers
 {
@@ -22,7 +24,7 @@ namespace WebAPI.Controllers
             return this.shares;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Authorize]
         public ActionResult CreateShare([FromRoute] string message)
         {
@@ -30,23 +32,63 @@ namespace WebAPI.Controllers
             {
                 Messages = message,
                 SenderUserName = User.Identity.Name,
-                Upvotes = 0
+                UserNamesUpvoted = new List<string>()
             });
 
             return Ok();
         }
 
-        [HttpGet]
+        [HttpDelete]
         [Authorize]
-        public ActionResult DeleteShare([FromRoute] string message)
+        public ActionResult DeleteShare([FromRoute] string shareId)
         {
-            this.shares.Add(new ShareDTO
+            var share = shares.FirstOrDefault(s => s.Id == new Guid(shareId));
+            if(share == null)
             {
-                Messages = message,
-                SenderUserName = User.Identity.Name,
-                Upvotes = 0
-            });
+                return Ok();
+            }
+            else
+            {
+                this.shares.Remove(share);
+            }
+            return Ok();
+        }
 
+        [HttpPost("upvote")]
+        [Authorize]
+        public ActionResult Upvote([FromRoute] string shareId)
+        {
+            var share = shares.FirstOrDefault(s => s.Id == new Guid(shareId));
+            if (share == null)
+            {
+                return Ok();
+            }
+            else
+            {
+                if (share.UserNamesUpvoted.Contains(HttpContext.User.Identity.Name) is false)
+                {
+                    share.UserNamesUpvoted.Add(HttpContext.User.Identity.Name);
+                }
+            }
+            return Ok();
+        }
+
+        [HttpPost("downvote")]
+        [Authorize]
+        public ActionResult Downvote([FromRoute] string shareId)
+        {
+            var share = shares.FirstOrDefault(s => s.Id == new Guid(shareId));
+            if (share == null)
+            {
+                return Ok();
+            }
+            else
+            {
+                if (share.UserNamesUpvoted.Contains(HttpContext.User.Identity.Name))
+                {
+                    share.UserNamesUpvoted.Remove(HttpContext.User.Identity.Name);
+                }
+            }
             return Ok();
         }
     }

@@ -26,6 +26,8 @@ namespace WebAPI.PlacesAPI
                 + "&inputtype=textquery"
                 + $"&key={APIKey}";
        
+
+            var strinsg = await httpClient.GetStringAsync(url);
             var placesResponse = await httpClient.GetFromJsonAsync<GooglePlacesAPIResponseDTO>(url);
 
 

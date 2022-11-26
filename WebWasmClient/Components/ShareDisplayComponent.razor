@@ -1,0 +1,21 @@
+﻿@inject HttpClient httpClient
+
+<div class="ShareDisplacContainer" style="display: flex; flex-direction: column;">
+    @if(shares != null)
+    {
+        foreach(var share in shares)
+        {
+            <ShareComponent Share="share"></ShareComponent>
+        }
+    }
+</div>
+
+
+@code {
+    private List<ShareDTO> shares;
+
+    protected override async Task OnInitializedAsync()
+    {
+        shares = await httpClient.GetFromJsonAsync<List<ShareDTO>>("/api/share");
+    }
+}

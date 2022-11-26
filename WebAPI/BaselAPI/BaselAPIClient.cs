@@ -17,6 +17,7 @@ namespace WebAPI.BaselAPI
 
         public async Task<IEnumerable<EntsorgungsstelleDTO>> LoadEntsorgungsstellen()
         {
+           
             var respnse = await httpClient.GetFromJsonAsync<APIResponseRootDTO<APIResponseRecordDTO<EntsorgungsstelleDTO>>>("https://data.bs.ch/api/records/1.0/search/?dataset=100021&q=&rows=310&facet=kategorie&facet=plz&facet=ortschaft&facet=zustaendig");
 
             return respnse.records.Select(r => r.fields);

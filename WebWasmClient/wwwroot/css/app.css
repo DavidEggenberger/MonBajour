@@ -112,6 +112,7 @@ button{
     grid-template-columns: repeat(4, 1fr);
     height: 100%;
     width: 100%;
+    grid-gap: 20px;
 }
 .alwaysContainer h2, h5 {
     text-align: center;
