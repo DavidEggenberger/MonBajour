@@ -124,10 +124,7 @@ button{
 }
 
 .LocalizedResult{
-    grid-row-start: 1;
-    grid-row-end: 2;
-    display: grid;
-    place-content: center;
+    height: 300px;
 }
 .LocalizedResult h3{
     margin-bottom: 5px;
@@ -142,6 +139,7 @@ button{
     overflow-y: auto;
     display: flex;
     box-sizing: border-box;
+    height: 300px;
 
 }
 .LoginMotivationContainer{
@@ -216,4 +214,17 @@ button{
     height: 45px;
     justify-content: space-between;
     display: flex;
+}
+.LocalizedContainer{
+    height: 440px;
+}
+.LocalizedResult{
+    height: 100px;
+}
+.AdministrativeContainer{
+    height: 220px;
+    overflow: auto;
+}
+.SearchResultContainer{
+    overflow: hidden;
 }

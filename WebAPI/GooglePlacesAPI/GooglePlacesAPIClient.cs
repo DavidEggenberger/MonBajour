@@ -31,7 +31,7 @@ namespace WebAPI.PlacesAPI
             var placesResponse = await httpClient.GetFromJsonAsync<GooglePlacesAPIResponseDTO>(url);
 
 
-            var t = await FindPlaceDetails(placesResponse.candidates.First().name);
+            //var t = await FindPlaceDetails(placesResponse.candidates.First().name);
 
             return placesResponse;
         }
